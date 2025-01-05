@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import './List.css';
-import TodoItem from './TodoItem';
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import "./List.css";
+import TodoItem from "./TodoItem";
+import { TodoStateContext } from "../App";
 
-export default function List({ todos, onUpdate, onDelete }) {
+export default function List() {
+  const todos = useContext(TodoStateContext);
   const [search, setSearch] = useState("");
 
   const onChangeSearch = (e) => {
@@ -10,25 +12,40 @@ export default function List({ todos, onUpdate, onDelete }) {
   };
 
   const getFilteredData = () => {
-    if(search === ""){
+    if (search === "") {
       return todos;
     }
-    return todos.filter((todo) => todo.content.toLowerCase().includes(search.toLowerCase()));
-  }
+    return todos.filter((todo) =>
+      todo.content.toLowerCase().includes(search.toLowerCase())
+    );
+  };
 
   const filteredTodos = getFilteredData();
 
+  const { totalCount, doneCount, notDoneCount } = useMemo(() => {
+    const totalCount = todos.length;
+    const doneCount = todos.filter((todo) => todo.isDone).length;
+    const notDoneCount = totalCount - doneCount;
+
+    return {
+      totalCount,
+      doneCount,
+      notDoneCount,
+    };
+  }, [todos]);
+
   return (
-    <div className='List'>
+    <div className="List">
       <h4>Todo List🌱</h4>
-      <input 
-        onChange={onChangeSearch}
-        placeholder='검색어를 입력하세요' />
-      <div className='todos_wrapper'>
+      <div>total: {totalCount}</div>
+      <div>Done: {doneCount}</div>
+      <div>notDone: {notDoneCount}</div>
+      <input onChange={onChangeSearch} placeholder="검색어를 입력하세요" />
+      <div className="todos_wrapper">
         {filteredTodos.map((todo) => {
-          return <TodoItem key={todo.id} {...todo} onUpdate={onUpdate} onDelete={onDelete} />
+          return <TodoItem key={todo.id} {...todo} />;
         })}
       </div>
     </div>
-  )
+  );
 }

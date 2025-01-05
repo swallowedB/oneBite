@@ -1,7 +1,8 @@
-import React from 'react';
+import { memo } from 'react';
 import './Header.css'
 
-export default function Header() {
+// eslint-disable-next-line react-refresh/only-export-components
+const Header = () =>{
   return (
     <div className='Header'>
       <h3>오늘은 ☀</h3>
@@ -9,3 +10,7 @@ export default function Header() {
     </div>
   )
 }
+
+const memoizedHeader = memo(Header);
+
+export default memoizedHeader;
