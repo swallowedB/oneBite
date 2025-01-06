@@ -1,14 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @import "./font.css";
 
-#root{
+#root {
   background-color: white;
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
   min-height: 100vh;
   height: 100%;
+  padding: 15px 50px;
+  box-shadow: 0px 5px 60px 20px rgba(33, 53, 85, 0.1);
 }
